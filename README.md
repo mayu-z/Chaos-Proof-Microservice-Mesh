@@ -21,27 +21,27 @@ A chaos monkey runs on a schedule — killing pods, injecting network latency �
        │
        ▼
 [ Global Envoy Proxy ]  ◄──────────────────────────────┐
-       │                                                │
+       │                                               │
        │  weighted routing (patched by Go controller)  │
-       ├──────────────┬──────────────┐                  │
-       ▼              ▼              ▼                  │
+       ├──────────────┬──────────────┐                 │
+       ▼              ▼              ▼                 │
   [us-east]      [us-west]     [eu-central]            │
-  namespace      namespace      namespace               │
-                                                        │
-  Each region contains:                                 │
-  - Envoy proxy (circuit breaker)                       │
-  - Users service                                       │
+  namespace      namespace      namespace              │
+                                                       │
+  Each region contains:                                │
+  - Envoy proxy (circuit breaker)                      │
+  - Users service                                      │
   - Timelines service  ◄── gRPC (sync)                 │
-  - Posts service                                       │
-  - Regional DB (PostgreSQL)                            │
-                                                        │
-  All regions feed into:                                │
-[ Kafka cluster ]  (rate-limited consumers per region)  │
-                                                        │
-[ Prometheus ]  ◄── scrapes p99, burn rate, Kafka lag   │
-       │                                                │
-       ▼                                                │
-[ Go Controller ] ──────────────────────────────────────┘
+  - Posts service                                      │
+  - Regional DB (PostgreSQL)                           │
+                                                       │
+  All regions feed into:                               │
+[ Kafka cluster ]  (rate-limited consumers per region) │
+                                                       │
+[ Prometheus ]  ◄── scrapes p99, burn rate, Kafka lag  │
+       │                                               │
+       ▼                                               │
+[ Go Controller ] ─────────────────────────────────────┘
        │
        ├──► patches Envoy weights (drain fast, recover slow)
        ├──► freezes HPA + ArgoCD sync during active incident
