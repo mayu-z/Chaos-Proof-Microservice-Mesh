@@ -406,3 +406,5 @@ open http://localhost:3000  # Grafana
 - Chaos engineering as continuous validation, not a one-time test
 - Structured incident management with automated post-mortem generation
 - Kafka consumer rate limiting for thundering herd prevention
+
+It's  a devops centric project made to automate the chaos management 
